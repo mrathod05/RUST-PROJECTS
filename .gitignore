@@ -1,0 +1,33 @@
+# Compiled binaries and libraries
+**/target
+Cargo.lock
+
+# Rust-specific files
+*.rs.bk
+*.rlib
+*.rlib.d
+*.d
+
+# Editor and IDE artifacts
+.idea/
+.vscode/
+*.swp
+*.swo
+*.vi
+*.vim
+*.emacs
+*.DS_Store # macOS
+Thumbs.db # Windows
+
+# Dependency directories (if you manually manage them)
+/vendor/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+
+# Distribution files
+/dist/
+/build/
+/out/
