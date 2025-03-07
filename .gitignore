@@ -31,3 +31,8 @@ Thumbs.db # Windows
 /dist/
 /build/
 /out/
+
+
+#Environment
+**/*/.env
+!**/*/.env.exmaple
