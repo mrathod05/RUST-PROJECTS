@@ -1,0 +1,11 @@
+📌 6. Distributed Hash Table (DHT) for Decentralized Storage
+Concepts Covered:
+Using Kademlia DHT (libp2p-kad)
+Storing and retrieving key-value pairs in a decentralized way.
+Understanding how torrents and blockchain networks store data.
+Project Description:
+Peers store small data chunks.
+Other peers can retrieve data from the network.
+No central database.
+🔹 What You’ll Learn?
+How BitTorrent and Blockchain networks store data.
