@@ -1,150 +1,108 @@
-use std::{
-    collections::HashMap,
-    error::Error,
-    io::{stdin, stdout, Write},
-    net::SocketAddr,
-    sync::Arc,
-};
+use std::{error::Error, net::SocketAddr, process, str::FromStr, sync::Arc};
 
+use clap::{Arg, Command};
 use tokio::{
-    io::{AsyncReadExt, AsyncWriteExt},
+    io::{self, AsyncReadExt},
     net::{TcpListener, TcpStream},
-    sync::Mutex,
+    sync::broadcast::{self, Sender},
 };
 
-const LISTENER_ADD: &str = "127.0.0.1:8080";
-
-struct Peer {
-    connections: Arc<Mutex<HashMap<SocketAddr, Arc<Mutex<TcpStream>>>>>,
+#[derive(Debug, Clone)]
+struct ChatMessage {
+    from: SocketAddr,
+    message: String,
 }
 
-impl Peer {
-    fn new() -> Self {
-        Peer {
-            connections: Arc::new(Mutex::new(HashMap::new())),
-        }
-    }
+fn get_args() -> (std::net::SocketAddr, std::net::SocketAddr) {
+    let matches = Command::new("Bidireactional p2p")
+        .about("To ge the peer address")
+        .arg(Arg::new("LISTEN").short('l').long("listing").required(true))
+        .arg(
+            Arg::new("CONNECT")
+                .short('c')
+                .long("connecting")
+                .required(true),
+        )
+        .get_matches();
 
-    async fn listen(&self) -> Result<(), Box<dyn Error>> {
-        let listener = TcpListener::bind(LISTENER_ADD).await?;
-        println!("Listening for peers on {}", LISTENER_ADD);
-
-        loop {
-            let (socket, socket_address) = listener.accept().await?;
-            println!("New peer connected {}", { socket_address });
-
-            let socket = Arc::new(Mutex::new(socket));
-            self.connections
-                .lock()
-                .await
-                .insert(socket_address, socket.clone());
-
-            let connection = self.connections.clone();
-            let socket_clone = socket.clone();
-
-            tokio::spawn(async move {
-                let mut buffer = [0; 1024];
-
-                loop {
-                    let mut socket = socket_clone.lock().await;
-                    match socket.read(&mut buffer).await {
-                        Ok(n) if n > 0 => {
-                            let message = String::from_utf8_lossy(&buffer[..n]);
-                            println!("{} {}", socket_address, message);
-                        }
-                        Ok(_) => {
-                            println!("Peer {} disconnected", socket_address);
-                            connection.lock().await.remove(&socket_address);
-                            break;
-                        }
-                        Err(e) => {
-                            eprintln!("Error reading from {} {}", socket_address, e);
-                            connection.lock().await.remove(&socket_address);
-                            break;
-                        }
-                    }
-                }
-            });
-        }
-    }
-
-    async fn connect(&self, address: &str) -> Result<(), Box<dyn Error>> {
-        let socket = TcpStream::connect(LISTENER_ADD).await?;
-        println!("Connected to peer at{address}");
-
-        let socket_guard = Arc::new(Mutex::new(socket));
-        self.connections
-            .lock()
-            .await
-            .insert(socket_guard.lock().await.peer_addr()?, socket_guard.clone());
-
-        tokio::spawn(async move {
-            let mut buffer = [0; 1024];
-            loop {
-                let mut socket = socket_guard.lock().await;
-                match socket.read(&mut buffer).await {
-                    Ok(n) if n > 0 => {
-                        let message = String::from_utf8_lossy(&buffer[..n]);
-                        println!("Peer {message}");
-                    }
-                    Ok(_) => {
-                        println!("Peer disconnected.");
-                        break;
-                    }
-                    Err(e) => {
-                        println!("Error reading from peer. {e}");
-                        break;
-                    }
-                }
+    let listing_address = match matches.get_one::<String>("LISTEN") {
+        Some(add) => match SocketAddr::from_str(add) {
+            Ok(address) => address,
+            Err(_) => {
+                eprintln!("Error: Invalid address {} ", add);
+                process::exit(1);
             }
-        });
-
-        Ok(())
-    }
-
-    async fn broadcast(&self, message: String) {
-        let peers = self.connections.lock().await;
-
-        for (add, stream) in peers.iter() {
-            let stream = stream.clone();
-
-            let _ = stream.lock().await.write_all(message.as_bytes()).await;
-            println!("Send to {add} {message}");
+        },
+        None => {
+            eprintln!("Please define listening address");
+            process::exit(1);
         }
-    }
+    };
+
+    let connection_address = match matches.get_one::<String>("CONNECT") {
+        Some(add) => match SocketAddr::from_str(add) {
+            Ok(address) => address,
+            Err(_) => {
+                eprintln!("Error: Invalid address {} ", add);
+                process::exit(1);
+            }
+        },
+        None => {
+            eprintln!("Please define connection address");
+            process::exit(1);
+        }
+    };
+
+    return (listing_address, connection_address);
+}
+
+async fn listing_for_client(
+    listing_add: SocketAddr,
+    tx: Sender<ChatMessage>,
+) -> Result<(), Box<dyn Error>> {
+    let listen = TcpListener::bind(listing_add).await?;
+
+    match listen.accept().await {
+        Ok((stream, address)) => {
+            println!("New connection {}", address);
+            print!(">");
+
+            tokio::io::AsyncWriteExt::flush(&mut tokio::io::stdout()).await?;
+
+            let welcome_message = format!("System: {address} had joined the chat");
+            let _ = tx.send(ChatMessage {
+                from: listing_add,
+                message: welcome_message,
+            })?;
+
+            let tx = &tx.clone();
+
+            let _ = tokio::spawn(handle_connection(stream, tx));
+        }
+        Err(e) => {
+            eprintln!("Error: Accepting connection {e}")
+        }
+    };
+
+    Ok(())
+}
+
+fn handle_connection(stream: TcpStream, tx: Arc<Sender<ChatMessage>>) -> Result<(), ()> {
+    let test = io::split(stream);
+
+    Ok(())
 }
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn Error>> {
-    let peer = Arc::new(Peer::new());
+async fn main() {
+    //Result<(), Box<dyn Error>>
+    let (listing_add, connecting_add) = get_args();
 
-    let peer_clone = peer.clone();
+    let (tx, rx) = broadcast::channel::<ChatMessage>(20);
 
-    tokio::spawn(async move {
-        let _ = peer_clone.listen().await;
+    let tx_clone = tx.clone();
+
+    let listing = tokio::spawn(async move {
+        listing_for_client(listing_add, tx);
     });
-
-    loop {
-        print!("Enter peer address to connect (or type 'msg' to send message) ");
-        stdout().flush()?;
-
-        let mut input = String::new();
-        let _ = stdin().read_line(&mut input);
-
-        let input = input.trim();
-
-        if input == "msg" {
-            print!("Enter message");
-            stdout().flush()?;
-
-            let mut input = String::new();
-            let _ = stdin().read_line(&mut input);
-
-            peer.broadcast(input.trim().to_string()).await;
-        } else {
-            if let Err(e) = peer.connect(input).await {
-                eprintln!("Failed to connect {e}");
-            }
-        }
-    }
 }
