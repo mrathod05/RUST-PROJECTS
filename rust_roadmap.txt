@@ -1,0 +1,23 @@
+Beginner Rust Projects
+
+Command-line Todo App - Create a simple CLI todo application to learn basic Rust syntax, structs, and file I/O
+HTTP Status Code Checker - Build a tool that checks website status codes (using the reqwest crate)
+JSON Parser - Write a basic JSON parser to understand Rust's handling of structured data
+Simple Key-Value Store - Create an in-memory database with basic CRUD operations
+File Encryption Tool - Build a tool that encrypts/decrypts files to learn about Rust's cryptography libraries
+
+Intermediate Rust Projects
+
+RESTful API - Build a web server with endpoints using Actix-web or Rocket (familiar territory coming from MERN)
+Peer-to-Peer File Sharing - Create a simple P2P application for file transfers
+Custom Blockchain Structure - Implement a basic blockchain data structure with blocks and simple proof-of-work
+Smart Contract Parser - Build a tool that can parse and validate simple smart contracts
+Distributed Key-Value Store - Extend your KV store to work across multiple nodes
+
+Advanced Rust Projects
+
+Blockchain Implementation - Build a functioning blockchain with consensus algorithm, transactions, and networking
+Smart Contract Platform - Create a simple VM for executing smart contracts
+Decentralized Exchange - Implement a DEX with order matching and wallet integration
+Zero-Knowledge Proof Implementation - Implement ZK proofs for private transactions
+Cross-Chain Bridge - Build an application that can transfer assets between two different blockchains

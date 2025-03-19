@@ -1,6 +1,0 @@
-[package]
-name = "p2p_encrypted_text_chat"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]

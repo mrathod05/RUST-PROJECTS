@@ -30,7 +30,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
                         // Message back
                         if let Err(e) = socket.write_all(SERVER_ACKNOWLEDGEMENT.as_bytes()).await {
                             eprintln!("Failed to send response {}", e);
-                        }
+                        };
                     }
                     Ok(_) => {
                         println!("Client {} disconnected", socket_address);
