@@ -1,4 +1,4 @@
-# 🦀 RUST-PROJECT
+# 🦀 RUST LEARNING JOURNEY
 
 This repository is a collection of Rust projects and mini-experiments that I'm building while learning the Rust programming language. Each folder contains a self-contained project that focuses on different aspects of Rust and systems programming.
 
@@ -7,19 +7,12 @@ This repository is a collection of Rust projects and mini-experiments that I'm b
 ```
 
 RUST-PROJECT/
-
 ├── todo-app
-
 ├── rust-auth
-
 ├── http-status-checker
-
 ├── P2P/
-
 │ ├── 1_basic_p2p_chat
-
 │ └── 2_bidirectional_p2p_chat
-
 ```
 
 ## 🚀 Projects
