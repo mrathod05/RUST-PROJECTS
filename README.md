@@ -174,3 +174,8 @@ This is a personal learning repo—projects may be in progress or not fully prod
 ---
 
 Feel free to check out the individual projects and follow along my Rust journey! 🦀💪
+
+## 🧑‍💻 Developer
+<img src="public/developer.jpg" alt="developer-logo" style="width:100px;hight:100px;"/>
+<b>Meet Rathod</b><br/>
+<a href="https://meetrathoddeveloper.netlify.app/contact" target="_blank">📞 Contact Me</a>
