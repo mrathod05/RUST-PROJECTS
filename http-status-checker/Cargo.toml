@@ -1,0 +1,13 @@
+[package]
+name = "http-status-checker"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+crossterm = "0.28.1"
+reqwest = "0.12.12"
+tokio-macros = { version = "0.2.0-alpha.6" }
+tokio = { version = "1.43.0", features = ["full"] }
+tui = "0.19.0"
+clap = { version = "4.5.31", features = ["derive"] }
+url = "2.5.4"
