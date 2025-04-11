@@ -1,194 +1,183 @@
-# 🦀 Rust Learning Progress Checklist
+# 🦀 RUST-PROJECT
 
-## 🎯 Learning Goals
+This repository is a collection of Rust projects and mini-experiments that I'm building while learning the Rust programming language. Each folder contains a self-contained project that focuses on different aspects of Rust and systems programming.
 
-- [ ] Complete all beginner projects
-- [ ] Master intermediate concepts
-- [ ] Build advanced applications
-- [ ] Contribute to Rust open source
+## 📁 Project Structure
 
-## 📚 BEGINNER LEVEL
+```
 
-### Prerequisites
+RUST-PROJECT/
 
-- [ ] Basic Rust syntax
-- [ ] Variables, data types, and control flow
-- [ ] Ownership and borrowing basics
-- [ ] Structs and enums
-- [ ] Basic error handling
-- [ ] Cargo package manager
+├── todo-app
 
-### Projects
+├── rust-auth
 
-#### 1. Command-line Calculator
+├── http-status-checker
 
-- [ ] Basic arithmetic operations
-- [ ] User input handling
-- [ ] Match expressions
-- [ ] Floating-point support
+├── P2P/
 
-#### 2. Todo List CLI
+│ ├── 1_basic_p2p_chat
 
-- [ ] Vector operations
-- [ ] String manipulation
-- [ ] File I/O
-- [ ] Add/remove tasks
-- [ ] Save to file
+│ └── 2_bidirectional_p2p_chat
 
-#### 3. Number Guessing Game
+```
 
-- [ ] Random number generation
-- [ ] Loop implementation
-- [ ] User input handling
-- [ ] Hint system
-- [ ] Score tracking
+## 🚀 Projects
 
-## 🚀 INTERMEDIATE LEVEL
+### 📡 http-status-checker
 
-### Core Concepts
+A simple CLI tool to check the HTTP status of provided URLs.
 
-- [ ] Advanced ownership patterns
-- [ ] Traits and generics
-- [ ] Error handling (Result/Option)
-- [ ] Modules and crates
-- [ ] Basic concurrency with threads
-- [ ] Testing in Rust
+**Dependencies Used:**
 
-### Projects
+- `reqwest` – for making HTTP requests
 
-#### 1. File System Analyzer
+- `tokio` & `tokio-macros` – async runtime for concurrency
 
-- [ ] File operations
-- [ ] Error handling
-- [ ] Recursive algorithms
-- [ ] Directory traversal
-- [ ] File statistics
-- [ ] Search functionality
+- `clap` – for CLI argument parsing
 
-#### 2. HTTP Status Checker
+- `tui`, `crossterm` – for building a terminal UI
 
-- [ ] Async programming
-- [ ] HTTP requests
-- [ ] JSON parsing
-- [ ] Concurrent checking
-- [ ] Timeout handling
+- `url` – for URL parsing and validation
 
-#### 3. Simple Database Engine
+**📚 Learning Highlights:**
 
-- [ ] Binary file handling
-- [ ] Indexing
-- [ ] Data structures
-- [ ] CRUD operations
-- [ ] Basic querying
-- [ ] Persistence
+- Building async command-line tools with Rust
 
-## 💪 ADVANCED LEVEL
+- Handling user input with a terminal UI
 
-### Advanced Concepts
+- Parsing and validating URLs
 
-- [ ] Advanced concurrency
-- [ ] Unsafe Rust
-- [ ] FFI (Foreign Function Interface)
-- [ ] Advanced trait patterns
-- [ ] Macros
-- [ ] Performance optimization
-
-### Projects
-
-#### 1. Web Server
-
-- [ ] TCP/IP handling
-- [ ] Threading
-- [ ] Async I/O
-- [ ] Static file serving
-- [ ] Basic routing
-- [ ] Middleware support
-- [ ] HTTP/2 support
-- [ ] WebSocket support
-
-#### 2. Key-Value Database
-
-- [ ] Network programming
-- [ ] Serialization
-- [ ] Concurrent access
-- [ ] Custom protocol
-- [ ] Persistence
-- [ ] Replication
-- [ ] Transaction support
-- [ ] Consistency guarantees
-
-#### 3. System Monitor
-
-- [ ] System APIs
-- [ ] Real-time processing
-- [ ] GUI implementation
-- [ ] Resource monitoring
-- [ ] Process management
-- [ ] Performance profiling
-- [ ] Plugin system
-
-## 🎓 EXPERT LEVEL
-
-### Expert Concepts
-
-- [ ] Zero-cost abstractions
-- [ ] Lock-free programming
-- [ ] Embedded systems
-- [ ] WebAssembly
-- [ ] Systems programming
-
-### Projects
-
-#### 1. Operating System Components
-
-- [ ] Kernel programming
-- [ ] Hardware interfaces
-- [ ] Basic scheduler
-- [ ] Memory management
-- [ ] Device drivers
-- [ ] File system implementation
-
-#### 2. Distributed System
-
-- [ ] Consensus algorithms
-- [ ] Distributed computing
-- [ ] Leader election
-- [ ] Distributed storage
-- [ ] Byzantine fault tolerance
-
-#### 3. Programming Language Interpreter
-
-- [ ] Parsing implementation
-- [ ] Bytecode generation
-- [ ] Virtual machine
-- [ ] Basic language features
-- [ ] JIT compilation
-- [ ] Garbage collection
-
-## 📊 Progress Tracking
-
-### Completion Statistics
-
-- Beginner Level: [0/15]
-- Intermediate Level: [0/17]
-- Advanced Level: [0/24]
-- Expert Level: [0/15]
-- Total Progress: [0/71]
-
-### Weekly Goals
-
-- [ ] Complete at least one project
-- [ ] Write tests for completed projects
-- [ ] Document learnings
-- [ ] Review and refactor code
-
-### Resources Used
-
-- [ ] The Rust Book
-- [ ] Rust by Example
-- [ ] Rust Cookbook
-- [ ] Asynchronous Programming in Rust
+- Error handling and futures in async Rust
 
 ---
 
-Last Updated: [Date]
+### 🗨️ P2P/1_basic_p2p_chat
+
+A basic peer-to-peer chat system using TCP sockets.
+
+**Dependencies Used:**
+
+- `tokio` – for async TCP socket handling
+
+**📚 Learning Highlights:**
+
+- Working with `tokio` TCP streams
+
+- Basic networking and message passing
+
+- Writing minimal peer-to-peer programs
+
+- Handling async I/O and simple concurrency
+
+---
+
+### 🔁 P2P/2_bidirectional_p2p_chat
+
+An extension of the basic P2P chat to allow full-duplex communication with encryption.
+
+**Dependencies Used:**
+
+- `tokio` – for asynchronous bidirectional sockets
+
+- `clap` – for parsing CLI flags
+
+- `aes-gcm`, `base64`, `rand` – for encryption and key generation
+
+- `thiserror` – for custom error handling
+
+**📚 Learning Highlights:**
+
+- Secure message transmission using encryption
+
+- Error management with custom error types
+
+- Splitting a binary with `[[bin]]`
+
+- Designing a more complex peer model
+
+---
+
+### 🔐 rust-auth
+
+A lightweight authentication system built with Rust, featuring JWT authentication and password hashing.
+
+**Dependencies Used:**
+
+- `argon2` – for password hashing
+
+- `chrono` – for date and time management
+
+- `dotenv` – for environment variable management
+
+- `jsonwebtoken` – for JWT token handling
+
+- `rocket` – for web server and handling JSON
+
+- `serde`, `serde_json` – for serializing/deserializing data
+
+- `sqlx` – for database interaction (PostgreSQL)
+
+**📚 Learning Highlights:**
+
+- Building a full authentication system (login, signup) in Rust
+
+- Managing database connections with `sqlx` and async queries
+
+- Hashing passwords securely with `argon2`
+
+- Creating and verifying JWT tokens for authentication
+
+- Web frameworks in Rust with `rocket` and handling JSON data
+
+---
+
+### 📝 todo-app
+
+A simple command-line TODO app that stores tasks in a file.
+
+**Dependencies Used:**
+
+- `colored` – for colored CLI output
+
+**📚 Learning Highlights:**
+
+- Basic file handling and task management
+
+- Working with the `colored` crate for styled terminal output
+
+- Building a simple, interactive CLI application
+
+---
+
+## 🧠 What I'm Learning
+
+- Rust syntax and best practices
+
+- Ownership, borrowing, and lifetimes
+
+- Concurrency and async programming
+
+- Crate ecosystem (`tokio`, `serde`, `clap`, `reqwest`, `rocket`, etc.)
+
+- Error handling and pattern matching
+
+- Networking and I/O
+
+- Building secure systems with encryption and JWT
+
+- Web and CLI application structures
+
+## 📌 Note
+
+This is a personal learning repo—projects may be in progress or not fully production-ready.
+
+## 📚 Resources I Use
+
+- [The Rust Book](https://doc.rust-lang.org/book/)
+
+- [Rust by Example](https://doc.rust-lang.org/rust-by-example/)
+
+---
+
+Feel free to check out the individual projects and follow along my Rust journey! 🦀💪
